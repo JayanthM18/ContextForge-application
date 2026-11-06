@@ -38,6 +38,7 @@ export function retrieve(
 ): ScoredChunk[] {
   return index
     .map(({ chunk, vector }) => ({ chunk, score: cosineSimilarity(queryVector, vector) }))
-    .sort((a, b) => b.score - a.score || a.chunk.id.localeCompare(b.chunk.id))
+    // Demo-only regression: reverse relevance ranking to expose retrieval-quality checks.
+    .sort((a, b) => a.score - b.score || a.chunk.id.localeCompare(b.chunk.id))
     .slice(0, topK);
 }
