@@ -49,7 +49,9 @@ evaluation:
     model: gemini-embedding-001
     api_key_env: GEMINI_API_KEY
   runs: 1
-  concurrency: 4
+  # Ragas expands a metric into multiple judge calls. Keep the smoke suite
+  # serial so the OpenRouter judge stays within its in-flight budget.
+  concurrency: 1
 
 thresholds:
   mean_drop:
