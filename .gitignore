@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.contextforge/
+results.json
+*.local.json
+*.local.yml
+.vitest/
+.DS_Store
