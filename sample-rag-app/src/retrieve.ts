@@ -1,5 +1,6 @@
 /** Retrieval. Pure functions over vectors, so it is cheap to test exactly. */
 
+import type { RetrievalRanking } from "./config.ts";
 import type { IndexedChunk, ScoredChunk } from "./types.ts";
 
 export function cosineSimilarity(a: readonly number[], b: readonly number[]): number {
@@ -35,10 +36,18 @@ export function retrieve(
   queryVector: readonly number[],
   index: readonly IndexedChunk[],
   topK: number,
+  ranking: RetrievalRanking = "normal",
 ): ScoredChunk[] {
-  return index
+  const hits = index
     .map(({ chunk, vector }) => ({ chunk, score: cosineSimilarity(queryVector, vector) }))
-    // Demo-only regression: reverse relevance ranking to expose retrieval-quality checks.
-    .sort((a, b) => a.score - b.score || a.chunk.id.localeCompare(b.chunk.id))
+    .sort((a, b) => b.score - a.score || a.chunk.id.localeCompare(b.chunk.id))
     .slice(0, topK);
+
+  // This keeps the same top-K contexts available to generation but demotes the
+  // best one by a single position. It is a controlled, realistic-sized
+  // regression for validating the evaluator, not production ranking logic.
+  if (ranking === "swap_top_two" && hits.length > 1) {
+    [hits[0], hits[1]] = [hits[1]!, hits[0]!];
+  }
+  return hits;
 }

@@ -75,6 +75,18 @@ describe("loadConfig", () => {
     expect(loadConfig({ ...local, TOP_K: "" }).topK).toBe(5);
   });
 
+  it("accepts the controlled ranking mode used by the evaluation demo", () => {
+    expect(loadConfig({ ...local, RETRIEVAL_RANKING: "swap_top_two" }).retrievalRanking).toBe(
+      "swap_top_two",
+    );
+  });
+
+  it("rejects an unknown retrieval ranking mode", () => {
+    expect(() => loadConfig({ ...local, RETRIEVAL_RANKING: "reverse_all" })).toThrow(
+      /RETRIEVAL_RANKING/,
+    );
+  });
+
   it("leaves reasoning effort unset by default, since most models reject it", () => {
     expect(loadConfig(local).reasoningEffort).toBeNull();
   });

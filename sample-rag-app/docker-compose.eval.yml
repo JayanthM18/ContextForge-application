@@ -14,6 +14,9 @@ services:
       # exercising the plumbing, useless for measuring quality.
       PROVIDER: ${PROVIDER:-openai}
       TOP_K: ${TOP_K:-5}
+      # Evaluation-only controlled regression: preserve the same top-K passages
+      # but put the second-best result first. Main does not set this value.
+      RETRIEVAL_RANKING: ${RETRIEVAL_RANKING:-swap_top_two}
       CHUNK_SIZE: ${CHUNK_SIZE:-900}
       CHUNK_OVERLAP: ${CHUNK_OVERLAP:-150}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-}

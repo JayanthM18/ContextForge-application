@@ -42,6 +42,13 @@ describe("retrieve", () => {
     expect(hits.map((hit) => hit.chunk.id)).toEqual(["a.md#c1", "b.md#c1", "c.md#c1"]);
   });
 
+  it("can deterministically swap only the top two results for an evaluation demo", () => {
+    const hits = retrieve([1, 0], index, 3, "swap_top_two");
+
+    expect(hits.map((hit) => hit.chunk.id)).toEqual(["b.md#c1", "a.md#c1", "c.md#c1"]);
+    expect(hits.map((hit) => hit.chunk.id).sort()).toEqual(["a.md#c1", "b.md#c1", "c.md#c1"]);
+  });
+
   it("returns at most topK chunks", () => {
     expect(retrieve([1, 0], index, 2)).toHaveLength(2);
   });

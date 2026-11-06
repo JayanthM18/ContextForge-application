@@ -5,6 +5,7 @@
  */
 
 export type Provider = "openai" | "gemini" | "local";
+export type RetrievalRanking = "normal" | "swap_top_two";
 
 const REASONING_EFFORTS = ["none", "minimal", "low", "medium", "high"] as const;
 export type ReasoningEffort = (typeof REASONING_EFFORTS)[number];
@@ -15,6 +16,8 @@ export interface AppConfig {
   readonly chunkSize: number;
   readonly chunkOverlap: number;
   readonly topK: number;
+  /** Demo-only ranking mode used to create controlled evaluation regressions. */
+  readonly retrievalRanking: RetrievalRanking;
   readonly provider: Provider;
   readonly embeddingModel: string;
   readonly generationModel: string;
@@ -65,6 +68,16 @@ function reasoningEffort(env: Env): ReasoningEffort | null {
   return raw as ReasoningEffort;
 }
 
+function retrievalRanking(env: Env): RetrievalRanking {
+  const raw = text(env, "RETRIEVAL_RANKING", "normal");
+  if (raw !== "normal" && raw !== "swap_top_two") {
+    throw new ConfigError(
+      `RETRIEVAL_RANKING must be "normal" or "swap_top_two", got "${raw}"`,
+    );
+  }
+  return raw;
+}
+
 export function loadConfig(env: Env = process.env): AppConfig {
   const providerRaw = text(env, "PROVIDER", "openai");
   if (providerRaw !== "openai" && providerRaw !== "gemini" && providerRaw !== "local") {
@@ -108,6 +121,7 @@ export function loadConfig(env: Env = process.env): AppConfig {
     chunkSize,
     chunkOverlap,
     topK: integer(env, "TOP_K", 5, 1, 50),
+    retrievalRanking: retrievalRanking(env),
     provider: providerRaw,
     embeddingModel,
     generationModel: text(

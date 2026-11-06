@@ -37,7 +37,7 @@ export async function buildPipeline(config: AppConfig): Promise<Pipeline> {
       const startedAt = performance.now();
 
       const [queryVector] = await embedder.embed([question], "RETRIEVAL_QUERY");
-      const retrieved = retrieve(queryVector ?? [], index, config.topK);
+      const retrieved = retrieve(queryVector ?? [], index, config.topK, config.retrievalRanking);
       const generation = await generator.generate(question, retrieved);
 
       return {
