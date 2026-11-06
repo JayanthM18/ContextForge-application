@@ -214,7 +214,7 @@ async function embedWithGemini(
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-goog-api-key": config.apiKey,
+        "x-goog-api-key": config.geminiEmbeddingApiKey,
       },
       body: JSON.stringify({
         requests: texts.map((text) => ({
@@ -257,7 +257,7 @@ export function createEmbedder(config: AppConfig, corpus: readonly string[]): Em
       for (let start = 0; start < texts.length; start += batchSize) {
         const batch = texts.slice(start, start + batchSize);
         vectors.push(
-          ...(config.provider === "gemini"
+          ...(config.embeddingModel.replace(/^models\//, "").startsWith("gemini-")
             ? await embedWithGemini(batch, taskType, config)
             : await embedWithOpenAi(batch, config)),
         );

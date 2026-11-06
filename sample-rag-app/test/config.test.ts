@@ -25,6 +25,20 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ PROVIDER: "gemini" })).toThrow(/GEMINI_API_KEY/);
   });
 
+  it("allows an OpenAI-compatible generator with Gemini embeddings", () => {
+    const config = loadConfig({
+      OPENAI_API_KEY: "groq-test-key",
+      GEMINI_API_KEY: "gemini-test-key",
+      EMBEDDING_MODEL: "gemini-embedding-001",
+    });
+
+    expect(config.provider).toBe("openai");
+    expect(config.geminiEmbeddingApiKey).toBe("gemini-test-key");
+    expect(() =>
+      loadConfig({ OPENAI_API_KEY: "groq-test-key", EMBEDDING_MODEL: "gemini-embedding-001" }),
+    ).toThrow(/GEMINI_API_KEY/);
+  });
+
   it("names the missing variable when openai has no key", () => {
     expect(() => loadConfig({})).toThrow(ConfigError);
     expect(() => loadConfig({})).toThrow(/OPENAI_API_KEY/);

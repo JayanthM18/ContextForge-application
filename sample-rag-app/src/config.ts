@@ -19,6 +19,7 @@ export interface AppConfig {
   readonly embeddingModel: string;
   readonly generationModel: string;
   readonly apiKey: string;
+  readonly geminiEmbeddingApiKey: string;
   readonly apiBaseUrl: string;
   readonly geminiEmbeddingBaseUrl: string;
   readonly requestTimeoutMs: number;
@@ -87,6 +88,19 @@ export function loadConfig(env: Env = process.env): AppConfig {
         "Set it in the environment, or set PROVIDER=local to run the offline provider.",
     );
   }
+  const embeddingModel = text(
+    env,
+    "EMBEDDING_MODEL",
+    providerRaw === "gemini" ? "gemini-embedding-001" : "text-embedding-3-small",
+  );
+  const geminiEmbeddingApiKey = text(env, "GEMINI_API_KEY", "");
+  if (
+    providerRaw !== "local" &&
+    embeddingModel.replace(/^models\//, "").startsWith("gemini-") &&
+    geminiEmbeddingApiKey === ""
+  ) {
+    throw new ConfigError("GEMINI_API_KEY is required when EMBEDDING_MODEL is a Gemini model.");
+  }
 
   return {
     port: integer(env, "PORT", 8000, 1, 65535),
@@ -95,17 +109,14 @@ export function loadConfig(env: Env = process.env): AppConfig {
     chunkOverlap,
     topK: integer(env, "TOP_K", 5, 1, 50),
     provider: providerRaw,
-    embeddingModel: text(
-      env,
-      "EMBEDDING_MODEL",
-      providerRaw === "gemini" ? "gemini-embedding-001" : "text-embedding-3-small",
-    ),
+    embeddingModel,
     generationModel: text(
       env,
       "GENERATION_MODEL",
       providerRaw === "gemini" ? "gemini-3.8-flash" : "gpt-4o-mini",
     ),
     apiKey,
+    geminiEmbeddingApiKey,
     apiBaseUrl: text(
       env,
       "OPENAI_BASE_URL",

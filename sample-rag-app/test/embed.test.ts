@@ -86,7 +86,11 @@ describe("localVector", () => {
         ),
       );
       vi.stubGlobal("fetch", fetcher);
-      const config = loadConfig({ PROVIDER: "gemini", GEMINI_API_KEY: "gemini-test-key" });
+      const config = loadConfig({
+        OPENAI_API_KEY: "groq-test-key",
+        GEMINI_API_KEY: "gemini-test-key",
+        EMBEDDING_MODEL: "gemini-embedding-001",
+      });
       const embedder = createEmbedder(config, []);
 
       await expect(embedder.embed(["hello"], "RETRIEVAL_QUERY")).resolves.toEqual([[0.2, 0.8]]);
