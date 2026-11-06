@@ -1,6 +1,6 @@
 /**
- * Answer generation. Temperature is 0 and the seed is fixed, because the app
- * contract requires two runs of the same question to be comparable.
+ * Temperature is 0. OpenAI gets a fixed seed; Gemini rejects that field on its
+ * OpenAI-compatible endpoint, so Gemini requests omit it.
  */
 
 import type { AppConfig } from "./config.ts";
@@ -55,7 +55,7 @@ async function generateWithOpenAi(
     body: JSON.stringify({
       model: config.generationModel,
       temperature: 0,
-      seed: 42,
+      ...(config.provider === "gemini" ? {} : { seed: 42 }),
       // Only when set: models that do not reason reject the parameter.
       ...(config.reasoningEffort === null ? {} : { reasoning_effort: config.reasoningEffort }),
       messages: [
