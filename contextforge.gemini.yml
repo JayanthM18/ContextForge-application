@@ -34,7 +34,7 @@ evaluation:
     base_url: https://generativelanguage.googleapis.com/v1beta/openai
     api_key_env: GEMINI_API_KEY
     temperature: 0
-    seed: 42
+    seed: null
   embeddings:
     provider: gemini
     model: gemini-embedding-001
