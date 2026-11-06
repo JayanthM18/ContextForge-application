@@ -37,9 +37,11 @@ evaluation:
   metrics: [context_precision, context_recall, faithfulness, answer_relevancy]
   judge:
     provider: openai
-    model: openai/gpt-oss-120b
-    base_url: https://api.groq.com/openai/v1
-    api_key_env: OPENAI_API_KEY
+    # OpenRouter keeps high-volume Ragas scoring independent from Groq's
+    # answer-generation quota. GPT-4.1 Mini supports structured output.
+    model: openai/gpt-4.1-mini
+    base_url: https://openrouter.ai/api/v1
+    api_key_env: OPENROUTER_API_KEY
     temperature: 0
     seed: 42
   embeddings:
