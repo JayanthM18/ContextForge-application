@@ -27,10 +27,11 @@ app:
     - TOP_K
 
 dataset:
-  # The frozen test set: generated in stage 4, reviewed and edited by hand.
-  path: benchmark/testcases.json
+  # Compact, representative set for low-cost PR smoke checks. Use the full
+  # testcases.json suite before release-quality evaluation.
+  path: benchmark/testcases.smoke.json
   source_docs: sample-rag-app/docs/knowledge-base
-  size: 40
+  size: 10
 
 evaluation:
   metrics: [context_precision, context_recall, faithfulness, answer_relevancy]
