@@ -15,7 +15,14 @@ app:
   startup_timeout: 120
   # Compose sees only these variables. PROVIDER lets the sample app run
   # offline (PROVIDER=local) for checks that need no model.
-  env_passthrough: [OPENAI_API_KEY, PROVIDER]
+  env_passthrough:
+    - PROVIDER
+    - OPENAI_API_KEY
+    - OPENAI_BASE_URL
+    - GENERATION_MODEL
+    - EMBEDDING_MODEL
+    - REASONING_EFFORT
+    - TOP_K
 
 dataset:
   # The frozen test set: generated in stage 4, reviewed and edited by hand.
@@ -27,15 +34,15 @@ evaluation:
   metrics: [context_precision, context_recall, faithfulness, answer_relevancy]
   judge:
     provider: openai
-    model: gpt-4o-mini
-    base_url: null
+    model: openai/gpt-4o-mini
+    base_url: https://openrouter.ai/api/v1
     api_key_env: OPENAI_API_KEY
     temperature: 0
     seed: 42
   embeddings:
     provider: openai
-    model: text-embedding-3-small
-    base_url: null
+    model: openai/text-embedding-3-small
+    base_url: https://openrouter.ai/api/v1
     api_key_env: OPENAI_API_KEY
   runs: 1
   concurrency: 4
