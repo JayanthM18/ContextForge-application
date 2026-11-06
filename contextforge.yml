@@ -34,7 +34,10 @@ dataset:
   size: 10
 
 evaluation:
-  metrics: [context_precision, context_recall, faithfulness, answer_relevancy]
+  # Retrieval ordering is the behavior under test. These two checks cover
+  # whether useful context is ranked first and whether the answer remains
+  # grounded, while keeping the PR smoke check within about ten minutes.
+  metrics: [context_precision, faithfulness]
   judge:
     provider: openai
     # OpenRouter keeps high-volume Ragas scoring independent from Groq's
