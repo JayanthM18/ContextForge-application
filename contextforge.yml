@@ -18,7 +18,9 @@ app:
   env_passthrough:
     - PROVIDER
     - OPENAI_API_KEY
+    - GEMINI_API_KEY
     - OPENAI_BASE_URL
+    - GEMINI_EMBEDDING_BASE_URL
     - GENERATION_MODEL
     - EMBEDDING_MODEL
     - REASONING_EFFORT
@@ -34,16 +36,15 @@ evaluation:
   metrics: [context_precision, context_recall, faithfulness, answer_relevancy]
   judge:
     provider: openai
-    model: openai/gpt-4o-mini
-    base_url: https://openrouter.ai/api/v1
+    model: openai/gpt-oss-120b
+    base_url: https://api.groq.com/openai/v1
     api_key_env: OPENAI_API_KEY
     temperature: 0
     seed: 42
   embeddings:
-    provider: openai
-    model: openai/text-embedding-3-small
-    base_url: https://openrouter.ai/api/v1
-    api_key_env: OPENAI_API_KEY
+    provider: gemini
+    model: gemini-embedding-001
+    api_key_env: GEMINI_API_KEY
   runs: 1
   concurrency: 4
 
