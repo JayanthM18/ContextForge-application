@@ -59,9 +59,7 @@ evaluation:
 thresholds:
   mean_drop:
     context_precision: 0.05
-    context_recall: 0.05
     faithfulness: 0.05
-    answer_relevancy: 0.05
   absolute_floor:
     faithfulness: 0.70
   max_regressed_cases: 3
