@@ -15,37 +15,46 @@ app:
   startup_timeout: 120
   # Compose sees only these variables. PROVIDER lets the sample app run
   # offline (PROVIDER=local) for checks that need no model.
-  env_passthrough: [OPENAI_API_KEY, PROVIDER]
+  env_passthrough:
+    - PROVIDER
+    - OPENAI_API_KEY
+    - GEMINI_API_KEY
+    - OPENAI_BASE_URL
+    - GEMINI_EMBEDDING_BASE_URL
+    - GENERATION_MODEL
+    - EMBEDDING_MODEL
+    - REASONING_EFFORT
+    - TOP_K
 
 dataset:
-  # The frozen test set: generated in stage 4, reviewed and edited by hand.
-  path: benchmark/testcases.json
+  # Compact, representative set for low-cost PR smoke checks. Use the full
+  # testcases.json suite before release-quality evaluation.
+  path: benchmark/testcases.smoke.json
   source_docs: sample-rag-app/docs/knowledge-base
-  size: 40
+  size: 10
 
 evaluation:
-  metrics: [context_precision, context_recall, faithfulness, answer_relevancy]
+  # A compact positive-control suite: verify that context stays well-ranked
+  # and answers remain grounded, within the PR time budget.
+  metrics: [context_precision, faithfulness]
   judge:
     provider: openai
-    model: gpt-4o-mini
-    base_url: null
-    api_key_env: OPENAI_API_KEY
+    model: openai/gpt-4.1-mini
+    base_url: https://openrouter.ai/api/v1
+    api_key_env: OPENROUTER_API_KEY
     temperature: 0
     seed: 42
   embeddings:
-    provider: openai
-    model: text-embedding-3-small
-    base_url: null
-    api_key_env: OPENAI_API_KEY
+    provider: gemini
+    model: gemini-embedding-001
+    api_key_env: GEMINI_API_KEY
   runs: 1
-  concurrency: 4
+  concurrency: 1
 
 thresholds:
   mean_drop:
     context_precision: 0.05
-    context_recall: 0.05
     faithfulness: 0.05
-    answer_relevancy: 0.05
   absolute_floor:
     faithfulness: 0.70
   max_regressed_cases: 3

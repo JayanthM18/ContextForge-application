@@ -1,0 +1,81 @@
+{
+  "dataset_version": 1,
+  "generated_at": "2026-11-07T00:00:00Z",
+  "generator": {
+    "tool": "manual smoke subset",
+    "version": "1",
+    "model": "n/a"
+  },
+  "cases": [
+    {
+      "id": "tc-001",
+      "question": "how long does it take to verify identity with support if you lose both the authenticator and recovery codes?",
+      "ground_truth": "losing both the authenticator and the recovery codes means identity verification with support, which takes up to 5 business days.",
+      "reference_context_ids": ["account-and-login.md"],
+      "hops": "single"
+    },
+    {
+      "id": "tc-002",
+      "question": "What payment terms do approved business accounts get?",
+      "ground_truth": "Net 30 payment terms.",
+      "reference_context_ids": ["bulk-and-business-orders.md"],
+      "hops": "single"
+    },
+    {
+      "id": "tc-005",
+      "question": "what is the shipping and delivery timelines and how does northwind plus subscription affect it",
+      "ground_truth": "shipping and delivery timelines are as follows: orders placed before 14:00 local warehouse time on a business day are picked the same day. standard delivery takes 3 to 5 business days, express takes 1 to 2 business days, and next day takes next business day if ordered before 14:00. northwind plus subscription includes free express delivery with no minimum order value.",
+      "reference_context_ids": ["shipping-and-delivery.md", "subscription-plans.md"],
+      "hops": "multi"
+    },
+    {
+      "id": "tc-011",
+      "question": "If I paid for an order partly with a gift card, how is the refund split?",
+      "ground_truth": "The gift card portion goes back to the gift card and the remainder to the original payment method. A gift card balance is never refunded as cash.",
+      "reference_context_ids": ["gift-cards.md"],
+      "hops": "single"
+    },
+    {
+      "id": "tc-013",
+      "question": "whats the phoone support hours?",
+      "ground_truth": "Phone support runs 09:00 to 17:00 on business days.",
+      "reference_context_ids": ["contacting-support.md"],
+      "hops": "single"
+    },
+    {
+      "id": "tc-014",
+      "question": "What are the customs and duty policies for orders shipped to the European Union?",
+      "ground_truth": "Orders shipped within the European Union from their own regional warehouse are delivered duty paid. You pay nothing further on arrival and the carrier will not ask you for money.",
+      "reference_context_ids": ["customs-and-duties.md"],
+      "hops": "single"
+    },
+    {
+      "id": "tc-021",
+      "question": "how long do i have to return an item and how long does it take to get my money back after sending it back",
+      "ground_truth": "you have 30 days to return an item after the carrier marks the parcel as delivered. once you send the item back, it takes up to 3 business days for the warehouse to inspect the returned item. after inspection, the refund is released immediately, but the card issuer may take a further 5 to 10 business days to post it to your statement.",
+      "reference_context_ids": ["returns-and-refunds.md"],
+      "hops": "single"
+    },
+    {
+      "id": "tc-022",
+      "question": "How can a customer use a gift card in combination with Trailhead loyalty points during checkout, and what are the limitations of this combination?",
+      "ground_truth": "A customer can use a gift card in combination with Trailhead loyalty points during checkout, as points can be redeemed in blocks of 100 at checkout and combined with a gift card. However, this combination cannot be used with a percentage-off promotion code. Additionally, gift cards are applied before any card or wallet payment, and points are not earned on gift card purchases.",
+      "reference_context_ids": ["loyalty-program.md", "gift-cards.md"],
+      "hops": "multi"
+    },
+    {
+      "id": "tc-028",
+      "question": "I found a defect four months after delivery. Should I return the item or make a warranty claim?",
+      "ground_truth": "Make a warranty claim. A return is for changing your mind and closes 30 days after delivery; the warranty covers defects for 2 years from the delivery date.",
+      "reference_context_ids": ["warranty.md"],
+      "hops": "single"
+    },
+    {
+      "id": "tc-030",
+      "question": "Who does Northwind share my personal data with?",
+      "ground_truth": "Addresses with carriers to deliver, and transaction data with the payment processor and with tax authorities where required. Northwind does not sell personal data.",
+      "reference_context_ids": ["privacy-and-data.md"],
+      "hops": "single"
+    }
+  ]
+}

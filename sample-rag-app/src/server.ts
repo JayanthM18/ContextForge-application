@@ -57,7 +57,8 @@ function parseQuestion(body: string): string {
     throw new BadRequestError('Field "question" must not be empty.');
   }
 
-  return question;
+  // Transport-level whitespace should not alter retrieval or generation.
+  return question.trim();
 }
 
 export function createServer(options: ServerOptions): Server {

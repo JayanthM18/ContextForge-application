@@ -143,6 +143,19 @@ describe("POST /query", () => {
     );
   });
 
+  it("normalizes harmless surrounding whitespace in a question", async () => {
+    const response = await post(
+      "/query",
+      JSON.stringify({ question: "  What is the refund window?  \n" }),
+    );
+    const body = (await response.json()) as { contexts: { id: string }[] };
+
+    expect(response.status).toBe(200);
+    expect(body.contexts.some((context) => context.id.startsWith("returns-and-refunds.md"))).toBe(
+      true,
+    );
+  });
+
   it("rejects a missing question with 400, not 500", async () => {
     const response = await post("/query", JSON.stringify({ q: "wrong field" }));
 
